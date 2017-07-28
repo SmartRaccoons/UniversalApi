@@ -1,0 +1,16 @@
+{
+  "name": "UniversalApi",
+  "version": "0.0.1",
+  "author": {
+    "name": "raccoons.lv"
+  },
+  "dependencies": {
+    "crypto": "0.0.3",
+    "express": "^4.15.3",
+    "lodash": "^4.17.4",
+    "mysql": "^2.14.0"
+  },
+  "devDependencies": {
+    "nock": "^9.0.14"
+  }
+}
