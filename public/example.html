@@ -1,0 +1,15 @@
+<script src=/d/j.js></script>
+
+<script>
+(function () {
+  var u = window.u = new UniversalApi({
+    session: 'vYUMRkBPuO1xTyaiufdPUrYj8XXvu01oz3iz',
+    app_id: 1
+  });
+  u.authorize(function (user) {
+    if !user.session
+      return false
+    console.info(user, u.session(), u.data('type'));
+  })
+})();
+</script>
