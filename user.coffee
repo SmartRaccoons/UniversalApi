@@ -59,7 +59,7 @@ module.exports = class User
         code: @options.dr_auth_code
         updated: {
           operator: '>'
-          value: new Date(new Date().getTime()-1000 * 60 * 60 * 24 * 30)
+          value: new Date(new Date().getTime() - 1000 * 60 * 60 * 24 * 30)
         }
       }
     }, (data)=>
@@ -78,10 +78,14 @@ module.exports = class User
           }
         }, (user)=>
           callback(user)
-          @options.db.insert {
+          @options.db.delete {
             table: table
-            data: {user_id: user.id, api_key: api.app_key, app_id: @options.app.id, code: @options.dr_auth_code, updated: new Date()}
-          }
+            where: {user_id: user.id, app_id: @options.app.id}
+          }, =>
+            @options.db.insert {
+              table: table
+              data: {user_id: user.id, api_key: api.app_key, app_id: @options.app.id, code: @options.dr_auth_code, updated: new Date()}
+            }
       ), callback
 
   _check_session: (callback)->
