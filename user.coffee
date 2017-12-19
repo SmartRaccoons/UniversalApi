@@ -52,7 +52,7 @@ module.exports = class User
     table = 'session_dr'
     @options.db.select {
       table: table
-      fields: ['user_id', 'api_key']
+      fields: ['id', 'user_id', 'api_key']
       one: true
       where: {
         app_id: @options.app.id
@@ -64,7 +64,14 @@ module.exports = class User
       }
     }, (data)=>
       if data
-        return @_create_session {id: data.user_id}, callback
+        @options.db.update {
+          table: table
+          where: {id: data.id}
+          data: {updated: new Date()}
+        }
+        delete data.id
+        @_create_session {id: data.user_id}, callback
+        return
       api = new api_draugiem(@options.app.dr_app_hash)
       api.authorize @options.dr_auth_code, ((user)=>
         if !user
