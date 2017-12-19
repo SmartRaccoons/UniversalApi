@@ -22,7 +22,7 @@ module.exports = class DB
   _json_check: (data)->
     d = {}
     for k, v of data
-      d[k] = if _.isObject(v) then JSON.stringify(v) else v
+      d[k] = if _.isObject(v) and !_.isDate(v) then JSON.stringify(v) else v
     d
 
   insert: (params, callback=->)->
