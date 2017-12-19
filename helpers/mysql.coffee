@@ -13,7 +13,7 @@ module.exports = class DB
       return ''
     params = []
     for f, v of wh
-      params.push "`#{f}`=#{@db.escape(v)}"
+      params.push "`#{f}`#{v.operator or '='}#{@db.escape(v.value or v)}"
     """
     WHERE
       #{params.join(' AND ')}
@@ -39,6 +39,13 @@ module.exports = class DB
         throw err
       callback(result)
 
+  delete: (params, callback=->)->
+    @db.query "DELETE FROM `#{params.table}` #{@_where(params.where)} LIMIT 1000", (err, result)->
+      if err
+        console.info params
+        throw err
+      callback(result)
+
   select: (params, callback)->
     @db.query """
       SELECT
@@ -46,7 +53,7 @@ module.exports = class DB
       FROM
         `#{params.table}`
       #{@_where(params.where)}
-
+      #{if params.order then "ORDER BY `#{params.order}` DESC" else ''}
       #{if params.one then 'LIMIT 1' else ''}
     """, (err, rows)=>
       if err

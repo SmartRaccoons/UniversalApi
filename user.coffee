@@ -57,6 +57,10 @@ module.exports = class User
       where: {
         app_id: @options.app.id
         code: @options.dr_auth_code
+        updated: {
+          operator: '>'
+          value: new Date(new Date().getTime()-1000 * 60 * 60 * 24 * 30)
+        }
       }
     }, (data)=>
       if data
